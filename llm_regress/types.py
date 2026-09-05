@@ -46,3 +46,10 @@ class GoldenCase(BaseModel):
     expected: ExpectedOutput
     expected_difficulty: int = Field(ge=1, le=5)
     notes: str = Field(description="Why this case matters")
+
+
+class GoldenDataset(BaseModel):
+    version: int
+    feature: str
+    version_date: str
+    cases: list[GoldenCase]

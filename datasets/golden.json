@@ -444,7 +444,7 @@
       "notes": "Plan comparison question."
     },
     {
-      "id": "c-41a2205fb4",
+      "id": "c-1026834f8b",
       "input": "Just wanted to say thanks — your support team was incredibly helpful with my last issue.",
       "expected": {
         "category": "general",
@@ -484,7 +484,7 @@
       "notes": "Business development inquiry."
     },
     {
-      "id": "c-ffc4c49683",
+      "id": "c-702ac359a2",
       "input": "The API docs for the billing endpoint have an error — the parameter is named 'amount' not 'total'.",
       "expected": {
         "category": "general",
@@ -604,7 +604,7 @@
       "notes": "Ambiguous: plan-change how-to with a billing/pricing motive."
     },
     {
-      "id": "c-4155f0c05f",
+      "id": "c-871d10e7d5",
       "input": "I need help downloading my data before I close my account — and I was told my final invoice would be $0.",
       "expected": {
         "category": "account",
@@ -758,7 +758,7 @@
       "notes": "Sarcasm; literal praise means failure. Tests tone inversion."
     },
     {
-      "id": "c-fad9dd8098",
+      "id": "c-c753986e00",
       "input": "I don't have a question about my bill. I'm just curious — do you think charging people for a service they never use is a good business model? Asking for a friend who definitely isn't me and definitely isn't disputing a charge.",
       "expected": {
         "category": "billing",

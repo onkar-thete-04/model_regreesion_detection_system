@@ -1,16 +1,787 @@
 {
   "version": 1,
-  "feature": "example-feature",
+  "feature": "email_classifier",
+  "version_date": "2026-09-05",
   "cases": [
     {
-      "id": "case-001",
-      "name": "Summarize a short paragraph",
-      "input": "Summarize the following text in one sentence: 'The company shipped a new model that reduces inference cost by 40 percent while keeping accuracy within one point of the previous release.'",
-      "rubric": {
-        "tone": "Neutral and concise, no marketing language",
-        "relevance": "Only content present in the source text",
-        "grounding": "Every claim traceable to the input text"
-      }
+      "id": "c-401db292b7",
+      "input": "I just got my invoice for March and it shows $149.99, but I signed up for the $99 plan. Can you check what happened?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer reports their March invoice charges $149.99 instead of the expected $99 plan and asks for a review."
+      },
+      "expected_difficulty": 2,
+      "notes": "Clean billing discrepancy with explicit amounts."
+    },
+    {
+      "id": "c-ac22ed53db",
+      "input": "You charged my credit card twice for the same renewal this month. Please reverse one of the charges immediately.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer reports a duplicate renewal charge and requests one be reversed."
+      },
+      "expected_difficulty": 2,
+      "notes": "Classic double-charge complaint."
+    },
+    {
+      "id": "c-3b8327ee70",
+      "input": "I cancelled my subscription last week but still got charged for this month. I'd like a full refund please.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer requests a refund after being charged despite cancelling."
+      },
+      "expected_difficulty": 2,
+      "notes": "Refund request tied to cancellation."
+    },
+    {
+      "id": "c-630fcf0bcb",
+      "input": "How do I move from the Starter plan to the Professional plan? Will I be charged the difference right away?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks how to upgrade from Starter to Professional and whether the price difference bills immediately."
+      },
+      "expected_difficulty": 2,
+      "notes": "Upgrade with immediate-charge question."
+    },
+    {
+      "id": "c-fae9eae8c7",
+      "input": "I need a copy of my last three invoices for my accountant. Can you send them as PDFs?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer requests PDF copies of their last three invoices."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine invoice document request."
+    },
+    {
+      "id": "c-73675936b8",
+      "input": "My old card expired and I want to update the payment method on file. Where do I do that?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks where to update an expired payment method."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine payment method update."
+    },
+    {
+      "id": "c-88f89abff0",
+      "input": "Do you offer any discounts for non-profits? We'd love to use your product but the price is a bit high.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks about non-profit discounts due to pricing concerns."
+      },
+      "expected_difficulty": 2,
+      "notes": "Pricing/discount inquiry."
+    },
+    {
+      "id": "c-95061789b3",
+      "input": "If I cancel mid-month, do you prorate the refund or keep the full month's charge?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks whether mid-month cancellation results in a prorated refund."
+      },
+      "expected_difficulty": 2,
+      "notes": "Proration policy question."
+    },
+    {
+      "id": "c-dd36d5f30e",
+      "input": "My invoice includes sales tax but I have a tax-exempt status. How do I get that applied to my account?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer with tax-exempt status asks how to remove sales tax from invoices."
+      },
+      "expected_difficulty": 3,
+      "notes": "Tax-exemption requires policy knowledge; slightly less common."
+    },
+    {
+      "id": "c-fddf4c642d",
+      "input": "My last payment failed and I got an email saying my account will be suspended. I've updated my card now, please retry.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer reports fixing a failed payment and asks for a retry before suspension."
+      },
+      "expected_difficulty": 2,
+      "notes": "Failed payment recovery."
+    },
+    {
+      "id": "c-4a7dad9a0e",
+      "input": "Which is cheaper over a year, the annual plan or paying monthly? I keep getting different answers.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks whether annual or monthly billing is cheaper over a year."
+      },
+      "expected_difficulty": 2,
+      "notes": "Pricing comparison question."
+    },
+    {
+      "id": "c-f2013aa696",
+      "input": "I see a charge on my statement from your company that I don't recognize from two months ago. What is it for?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks about an unrecognized charge from two months ago."
+      },
+      "expected_difficulty": 2,
+      "notes": "Unrecognized charge investigation."
+    },
+    {
+      "id": "c-5a9b3c7307",
+      "input": "We added three new team members last week. When will the extra seats show up on our bill?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks when newly added team seats will appear on their bill."
+      },
+      "expected_difficulty": 2,
+      "notes": "Seat-based billing timing."
+    },
+    {
+      "id": "c-e05b58910f",
+      "input": "Please confirm my subscription is fully cancelled and I won't be billed again. I want written confirmation.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer requests written confirmation that their subscription is cancelled with no future billing."
+      },
+      "expected_difficulty": 2,
+      "notes": "Cancellation confirmation request."
+    },
+    {
+      "id": "c-f16dbd4af2",
+      "input": "Our integration started throwing 500 errors from your API around 2pm today. Nothing changed on our side. Can you investigate?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports API 500 errors since 2pm and asks for investigation."
+      },
+      "expected_difficulty": 2,
+      "notes": "Clean API error report."
+    },
+    {
+      "id": "c-95c1f0606c",
+      "input": "The Python SDK's upload() method returns None even though the file uploads fine. Is this a known bug?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports the Python SDK upload() returning None despite successful uploads."
+      },
+      "expected_difficulty": 3,
+      "notes": "SDK behavior question with bug suspicion."
+    },
+    {
+      "id": "c-5f17d71827",
+      "input": "Webhooks stopped firing after we updated to the latest version. Events show in the dashboard but nothing reaches our endpoint.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports webhooks stopped delivering after an update despite dashboard events."
+      },
+      "expected_difficulty": 3,
+      "notes": "Webhook delivery failure, contrast with dashboard state."
+    },
+    {
+      "id": "c-2608dbfe19",
+      "input": "Response times have been around 3 seconds today, normally under 200ms. Is there an outage?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports unusually high latency and asks about a possible outage."
+      },
+      "expected_difficulty": 2,
+      "notes": "Latency/outage report with metrics."
+    },
+    {
+      "id": "c-02464674c7",
+      "input": "What's the correct way to authenticate server-to-server calls? I'm using an API key but getting 401s.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks how to authenticate server-to-server calls after getting 401 errors."
+      },
+      "expected_difficulty": 3,
+      "notes": "Auth method question with failure symptom."
+    },
+    {
+      "id": "c-f062601f27",
+      "input": "We noticed your service was down from 3:00 to 3:20 UTC yesterday. Where can I find the incident report?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks where to find an incident report for a service outage."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine incident report request."
+    },
+    {
+      "id": "c-5f6cc2fe55",
+      "input": "When I export data to CSV, the date columns come out as numbers instead of dates. How do I fix that?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports CSV exports formatting dates as numbers and asks how to fix it."
+      },
+      "expected_difficulty": 3,
+      "notes": "Data export formatting problem."
+    },
+    {
+      "id": "c-aeb84c2c7a",
+      "input": "We're hitting '429 Too Many Requests' during our nightly sync job. What's the rate limit for the API?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks about API rate limits after hitting 429 errors."
+      },
+      "expected_difficulty": 2,
+      "notes": "Rate limit question."
+    },
+    {
+      "id": "c-e9f61f21ee",
+      "input": "Is there a sandbox environment I can test against before going live? I don't want to touch production.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks about a sandbox environment for pre-production testing."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine environment question."
+    },
+    {
+      "id": "c-f50c493d44",
+      "input": "I'm trying to configure SSO with Azure AD. The metadata URL you gave returns a 404. Can you send the correct one?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports the SSO metadata URL returning 404 during Azure AD setup."
+      },
+      "expected_difficulty": 3,
+      "notes": "SSO configuration failure with specific detail."
+    },
+    {
+      "id": "c-63b63bfeaf",
+      "input": "Every time I click 'reset password' I get the email, but the link sends me back to the login page instead of a reset form.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports password reset links looping back to login instead of a reset form."
+      },
+      "expected_difficulty": 2,
+      "notes": "Reset link flow bug."
+    },
+    {
+      "id": "c-0d666509d4",
+      "input": "Our emails from your system are landing in spam. What DNS records should I configure to fix this?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks which DNS records to configure to fix emails landing in spam."
+      },
+      "expected_difficulty": 3,
+      "notes": "Deliverability/DNS question."
+    },
+    {
+      "id": "c-3402f9cebf",
+      "input": "Does your service still support the v1 API? We have legacy code we haven't migrated yet.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks whether the v1 API remains supported for legacy integrations."
+      },
+      "expected_difficulty": 1,
+      "notes": "Simple version support question."
+    },
+    {
+      "id": "c-ac0824b7cb",
+      "input": "The mobile app crashes on startup after the latest update on Android 13. Anyone else reporting this?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports the mobile app crashing on startup after the latest Android update."
+      },
+      "expected_difficulty": 2,
+      "notes": "App crash report."
+    },
+    {
+      "id": "c-9071a77f06",
+      "input": "I need to change the email address associated with my account. My old one is being deactivated by my company.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer needs to change the email address on their account before company deactivation."
+      },
+      "expected_difficulty": 2,
+      "notes": "Account email change."
+    },
+    {
+      "id": "c-87aa803997",
+      "input": "Please delete my account and all associated data permanently. I understand this can't be undone.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer requests permanent deletion of their account and data."
+      },
+      "expected_difficulty": 2,
+      "notes": "Account deletion request."
+    },
+    {
+      "id": "c-bce0896f05",
+      "input": "How do I give my new colleague access to our account without sharing my password?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks how to grant a colleague account access without sharing a password."
+      },
+      "expected_difficulty": 2,
+      "notes": "Team access management."
+    },
+    {
+      "id": "c-0ad739080e",
+      "input": "I lost my phone and can't access the authenticator app. How do I get back into my account?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer lost their phone and asks how to recover account access without the authenticator app."
+      },
+      "expected_difficulty": 3,
+      "notes": "2FA account recovery scenario."
+    },
+    {
+      "id": "c-7f91e55605",
+      "input": "My account is locked after too many failed login attempts. I know my password now. How do I unlock it?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks how to unlock an account locked after failed logins."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine unlock request."
+    },
+    {
+      "id": "c-a948d55161",
+      "input": "We rebranded from Acme LLC to Northwind Inc. How do I update the company name on our account and invoices?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks how to update the company name on account and invoices after rebranding."
+      },
+      "expected_difficulty": 2,
+      "notes": "Company rename affects account and billing."
+    },
+    {
+      "id": "c-eeeb295d88",
+      "input": "Our admin left the company. How do I transfer the admin role to someone else?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks how to transfer the admin role after the previous admin left."
+      },
+      "expected_difficulty": 2,
+      "notes": "Admin role transfer."
+    },
+    {
+      "id": "c-cd4234e220",
+      "input": "I can't upload a new profile picture. It says 'file too large' even for a small image.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer reports profile picture uploads rejected as too large despite small files."
+      },
+      "expected_difficulty": 2,
+      "notes": "Profile settings issue."
+    },
+    {
+      "id": "c-4e4f9b1f1d",
+      "input": "I keep getting marketing emails even though I turned off all notifications. How do I actually stop them?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer reports marketing emails continuing despite disabled notifications."
+      },
+      "expected_difficulty": 2,
+      "notes": "Notification preferences not honored."
+    },
+    {
+      "id": "c-2b87e2bc9d",
+      "input": "I accidentally created two accounts. Can you merge them so I don't lose my history?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks to merge two accidentally-created accounts without losing history."
+      },
+      "expected_difficulty": 3,
+      "notes": "Account merge request."
+    },
+    {
+      "id": "c-7fb2fc911f",
+      "input": "I got an email about a login from a country I've never been to. Is my account compromised?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer reports an unfamiliar login location and asks if their account is compromised."
+      },
+      "expected_difficulty": 2,
+      "notes": "Security concern about account access."
+    },
+    {
+      "id": "c-6f947ab9ff",
+      "input": "The person who originally signed up has left. How do we change the billing owner on the account?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks how to change the billing owner after the original signer left."
+      },
+      "expected_difficulty": 3,
+      "notes": "Ownership transfer with billing implication."
+    },
+    {
+      "id": "c-613b9e2567",
+      "input": "I'd like a copy of all the data I've stored on your platform. How do I request a data export?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer requests a full export of their stored data."
+      },
+      "expected_difficulty": 1,
+      "notes": "Routine data export request."
+    },
+    {
+      "id": "c-3669d4313f",
+      "input": "Can I change my username? I picked something unprofessional when I signed up.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks whether they can change an unprofessional username."
+      },
+      "expected_difficulty": 1,
+      "notes": "Simple profile change question."
+    },
+    {
+      "id": "c-01ecf3f93b",
+      "input": "Does your product support scheduling recurring reports? I didn't see it in the docs.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks whether recurring report scheduling is supported."
+      },
+      "expected_difficulty": 2,
+      "notes": "Feature availability question."
+    },
+    {
+      "id": "c-69265a931d",
+      "input": "What does the Enterprise plan include compared to Business? I can't find a clear comparison.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks for a comparison of Enterprise vs Business plan features."
+      },
+      "expected_difficulty": 2,
+      "notes": "Plan comparison question."
+    },
+    {
+      "id": "c-41a2205fb4",
+      "input": "Just wanted to say thanks — your support team was incredibly helpful with my last issue.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer sends a thank-you message for helpful support."
+      },
+      "expected_difficulty": 1,
+      "notes": "Positive feedback, no action needed."
+    },
+    {
+      "id": "c-2a9ceefc11",
+      "input": "Do you have a dark mode? I work at night and the white UI is hard on my eyes.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks whether a dark mode is available."
+      },
+      "expected_difficulty": 1,
+      "notes": "Simple UI feature question."
+    },
+    {
+      "id": "c-fa652701d8",
+      "input": "I'm on the 14-day trial. What happens to my data if I don't upgrade when it ends?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks what happens to trial data if they don't upgrade."
+      },
+      "expected_difficulty": 2,
+      "notes": "Trial policy question."
+    },
+    {
+      "id": "c-d9fea0747b",
+      "input": "We'd like to explore a partnership or integration with your platform. Who should I talk to?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer inquires about partnership or integration opportunities."
+      },
+      "expected_difficulty": 2,
+      "notes": "Business development inquiry."
+    },
+    {
+      "id": "c-ffc4c49683",
+      "input": "The API docs for the billing endpoint have an error — the parameter is named 'amount' not 'total'.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer reports a documentation error in the billing endpoint parameters."
+      },
+      "expected_difficulty": 2,
+      "notes": "Docs feedback, not a support issue for their account."
+    },
+    {
+      "id": "c-ff4a8d6873",
+      "input": "What are your support hours? We're in a different time zone and need to know when you're available.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks about support hours relative to their time zone."
+      },
+      "expected_difficulty": 1,
+      "notes": "Simple support-hours question."
+    },
+    {
+      "id": "c-ca1b7baba0",
+      "input": "Is it possible to schedule a demo with your sales team for a 200-seat rollout?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer requests a sales demo for a 200-seat rollout."
+      },
+      "expected_difficulty": 2,
+      "notes": "Sales demo request."
+    },
+    {
+      "id": "c-42012938c6",
+      "input": "Will there be a status page where we can subscribe to incident notifications?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks about a status page with incident notification subscriptions."
+      },
+      "expected_difficulty": 2,
+      "notes": "Product roadmap question."
+    },
+    {
+      "id": "c-8a5f14c312",
+      "input": "I'm evaluating tools for my team. Can you point me to case studies from companies in healthcare?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer evaluating tools asks for healthcare case studies."
+      },
+      "expected_difficulty": 2,
+      "notes": "Prospect research request."
+    },
+    {
+      "id": "c-4dc0f0c371",
+      "input": "I was charged for a service I couldn't use because my login was broken for two weeks.",
+      "expected": {
+        "category": "billing",
+        "category_any": [
+          "billing",
+          "technical"
+        ],
+        "summary": "Customer disputes a charge for service they couldn't access due to login issues."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: billing dispute rooted in a technical outage. Either category is defensible."
+    },
+    {
+      "id": "c-f091afea79",
+      "input": "Can you delete my account? Also, will I get a refund for the unused portion of this month?",
+      "expected": {
+        "category": "account",
+        "category_any": [
+          "account",
+          "billing"
+        ],
+        "summary": "Customer requests account deletion and asks about a refund for unused time."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: spans account closure and billing refund."
+    },
+    {
+      "id": "c-b92ad5d365",
+      "input": "My invoice says I have 12 users but I only see 10 in the admin panel. Which one is right?",
+      "expected": {
+        "category": "billing",
+        "category_any": [
+          "billing",
+          "account"
+        ],
+        "summary": "Customer asks which user count is correct when the invoice and admin panel disagree."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: discrepancy between billing count and account membership."
+    },
+    {
+      "id": "c-293583d8be",
+      "input": "The reset password email never arrives and my card was charged twice today. This is frustrating.",
+      "expected": {
+        "category": "technical",
+        "category_any": [
+          "technical",
+          "billing"
+        ],
+        "summary": "Customer reports both a missing password reset email and a double charge."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: two distinct issues in one message, technical and billing."
+    },
+    {
+      "id": "c-6be0f6ee19",
+      "input": "How do I change my plan? I'm asking because the annual renewal price just jumped and I might leave.",
+      "expected": {
+        "category": "billing",
+        "category_any": [
+          "billing",
+          "general"
+        ],
+        "summary": "Customer asks how to change their plan after an annual renewal price increase."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: plan-change how-to with a billing/pricing motive."
+    },
+    {
+      "id": "c-4155f0c05f",
+      "input": "I need help downloading my data before I close my account — and I was told my final invoice would be $0.",
+      "expected": {
+        "category": "account",
+        "category_any": [
+          "account",
+          "billing"
+        ],
+        "summary": "Customer wants to download data before closing their account and confirms a $0 final invoice."
+      },
+      "expected_difficulty": 4,
+      "notes": "Ambiguous: account closure with billing confirmation."
+    },
+    {
+      "id": "c-fc2a876fce",
+      "input": "Refund please.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks for a refund."
+      },
+      "expected_difficulty": 2,
+      "notes": "Extremely short but unambiguous intent."
+    },
+    {
+      "id": "c-7c38003550",
+      "input": "Help",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asks for help without specifying the issue."
+      },
+      "expected_difficulty": 4,
+      "notes": "Single word with no category signal; tests safe defaulting."
+    },
+    {
+      "id": "c-e383aecbcc",
+      "input": "Password reset?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer asks about resetting their password."
+      },
+      "expected_difficulty": 3,
+      "notes": "Short phrase with clear account intent."
+    },
+    {
+      "id": "c-83ea9df9ff",
+      "input": "invoice",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer mentions their invoice with no further detail."
+      },
+      "expected_difficulty": 3,
+      "notes": "Single keyword; billing implied but minimal."
+    },
+    {
+      "id": "c-f003d0663e",
+      "input": "down?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer asks if the service is down."
+      },
+      "expected_difficulty": 3,
+      "notes": "Single-word outage check."
+    },
+    {
+      "id": "c-200836d0d0",
+      "input": "Cancel.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer requests cancellation."
+      },
+      "expected_difficulty": 2,
+      "notes": "Single word; account closure implied."
+    },
+    {
+      "id": "c-4df0ae4a71",
+      "input": "My invioce is wrong, it shows 200$ but I only use teh basic plan. Fix it plz.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer says their invoice incorrectly shows $200 for the basic plan."
+      },
+      "expected_difficulty": 4,
+      "notes": "Typos and slang; intent still billing."
+    },
+    {
+      "id": "c-b9c811fc36",
+      "input": "I cant log in, it says my pasword is wrong but I no it isnt.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer cannot log in despite believing their password is correct."
+      },
+      "expected_difficulty": 3,
+      "notes": "Typos; clear account/login intent."
+    },
+    {
+      "id": "c-d13ddf80f4",
+      "input": "The API keeps givng me 500 errrs when I send the webhook, pls help asap.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports repeated API 500 errors on webhook requests."
+      },
+      "expected_difficulty": 4,
+      "notes": "Typos; technical intent clear."
+    },
+    {
+      "id": "c-ee4fff9947",
+      "input": "How do I upgrad my acount to the pro plan? the page is confusng.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer asks how to upgrade their account to the pro plan."
+      },
+      "expected_difficulty": 3,
+      "notes": "Typos; upgrade question (billing-adjacent)."
+    },
+    {
+      "id": "c-ecdbd06104",
+      "input": "Hola, I was charged twice on my tarjeta. Can you reverse one? Gracias.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer reports a double charge on their card and asks for one reversal."
+      },
+      "expected_difficulty": 4,
+      "notes": "Mixed Spanish/English; key signals 'charged' and 'tarjeta'."
+    },
+    {
+      "id": "c-3c51234260",
+      "input": "Bonjour, my compte is locked and je ne peux pas login. Help please.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer reports their account is locked and they cannot log in."
+      },
+      "expected_difficulty": 4,
+      "notes": "Mixed French/English; account lock intent."
+    },
+    {
+      "id": "c-d8d8159c3b",
+      "input": "Oh great, ANOTHER unexpected charge. Just what I needed on a Monday. Thanks so much for that.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer sarcastically complains about another unexpected charge."
+      },
+      "expected_difficulty": 5,
+      "notes": "Sarcasm inverts literal thanks; true intent is a billing complaint."
+    },
+    {
+      "id": "c-0452bfaa13",
+      "input": "Wow, your product has been working SO well lately. Every time I click save it just deletes my work. Amazing.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer sarcastically reports that saving deletes their work."
+      },
+      "expected_difficulty": 5,
+      "notes": "Sarcasm; literal praise means failure. Tests tone inversion."
+    },
+    {
+      "id": "c-fad9dd8098",
+      "input": "I don't have a question about my bill. I'm just curious — do you think charging people for a service they never use is a good business model? Asking for a friend who definitely isn't me and definitely isn't disputing a charge.",
+      "expected": {
+        "category": "billing",
+        "category_any": [
+          "billing",
+          "general"
+        ]
+      },
+      "expected_difficulty": 5,
+      "notes": "Adversarial: disguised dispute with no explicit request; no unique ideal summary."
+    },
+    {
+      "id": "c-1b8ed45766",
+      "input": "Quick question about nothing related to support: if a company silently raised prices by 40%, would that be considered a 'technical issue' or should I just cancel my account entirely and delete everything?",
+      "expected": {
+        "category": "billing",
+        "category_any": [
+          "billing",
+          "account"
+        ]
+      },
+      "expected_difficulty": 5,
+      "notes": "Adversarial: pricing complaint masked as a question, mixed signals, no clear request."
     }
   ]
 }

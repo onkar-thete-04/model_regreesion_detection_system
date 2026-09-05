@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "feature": "example-feature",
+  "cases": [
+    {
+      "id": "case-001",
+      "name": "Summarize a short paragraph",
+      "input": "Summarize the following text in one sentence: 'The company shipped a new model that reduces inference cost by 40 percent while keeping accuracy within one point of the previous release.'",
+      "rubric": {
+        "tone": "Neutral and concise, no marketing language",
+        "relevance": "Only content present in the source text",
+        "grounding": "Every claim traceable to the input text"
+      }
+    }
+  ]
+}

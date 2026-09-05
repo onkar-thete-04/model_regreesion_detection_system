@@ -1,0 +1,31 @@
+feature:
+  name: example-feature
+  description: LLM-powered feature under regression testing
+
+model_under_test:
+  provider: nvidia_nim
+  base_url: https://integrate.api.nvidia.com/v1
+  model: meta/llama-3.1-8b-instruct
+
+judge:
+  provider: nvidia_nim
+  base_url: https://integrate.api.nvidia.com/v1
+  model: nvidia/llama-3.1-nemotron-70b-instruct
+
+eval:
+  framework: deepeval
+  dimensions:
+    - tone
+    - relevance
+    - grounding
+
+regression:
+  absolute_floor: 3.5
+  max_drop: 0.5
+
+storage:
+  sqlite_path: results/eval.db
+  report_dir: results/reports
+
+slack:
+  webhook_url_env: SLACK_WEBHOOK_URL

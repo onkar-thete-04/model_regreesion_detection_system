@@ -28,3 +28,21 @@ class PromptConfig(BaseModel):
     timestamp: datetime = Field(description="When this prompt version was created")
     system_prompt: str = Field(description="System prompt that drives the classifier")
     few_shot_examples: list[FewShotExample] = Field(default_factory=list)
+
+
+class ExpectedOutput(BaseModel):
+    category: Category = Field(description="Single best-answer category")
+    category_any: list[Category] | None = Field(
+        default=None, description="Acceptable categories for ambiguous cases"
+    )
+    summary: str | None = Field(
+        default=None, description="Ideal one-sentence summary (None for hard cases)"
+    )
+
+
+class GoldenCase(BaseModel):
+    id: str = Field(description="Stable content-hash ID")
+    input: str = Field(description="Customer email text")
+    expected: ExpectedOutput
+    expected_difficulty: int = Field(ge=1, le=5)
+    notes: str = Field(description="Why this case matters")

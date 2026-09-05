@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .config import Config
-from .dataset import Case, Dataset
+from .dataset import Dataset
 from .judge import DimensionScore, Judge
 
 

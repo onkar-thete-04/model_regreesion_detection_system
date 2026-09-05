@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 from llm_regress.dataset import GoldenDataset
@@ -21,6 +22,18 @@ def test_case_ids_unique_and_valid():
     ids = [c.id for c in ds.cases]
     assert len(ids) == len(set(ids))
     assert all(i.startswith("c-") and len(i) == 12 for i in ids)
+
+
+def test_ids_are_content_hashes():
+    ds = GoldenDataset.load(GOLDEN)
+    for case in ds.cases:
+        expected_id = (
+            "c-"
+            + hashlib.sha256(
+                (case.expected.category.value + "\x00" + case.input).encode("utf-8")
+            ).hexdigest()[:10]
+        )
+        assert case.id == expected_id
 
 
 def test_all_categories_valid_and_difficulty_in_range():

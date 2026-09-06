@@ -53,3 +53,18 @@ class GoldenDataset(BaseModel):
     feature: str
     version_date: str
     cases: list[GoldenCase]
+
+
+class TokenUsage(BaseModel):
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+
+
+class RawResult(BaseModel):
+    case_id: str
+    input: str
+    output: ClassifierOutput | None = None
+    latency_ms: float = 0.0
+    token_usage: TokenUsage | None = None
+    error: str | None = None

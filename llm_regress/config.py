@@ -27,6 +27,13 @@ class StorageConfig:
 
 
 @dataclass
+class RunnerConfig:
+    max_concurrency: int = 8
+    timeout_seconds: float = 60.0
+    max_retries: int = 2
+
+
+@dataclass
 class Config:
     feature: dict
     model_under_test: ModelConfig
@@ -34,6 +41,7 @@ class Config:
     dimensions: list[str]
     regression: RegressionConfig
     storage: StorageConfig
+    runner: RunnerConfig
     slack_webhook_env: str = "SLACK_WEBHOOK_URL"
 
     @classmethod
@@ -43,6 +51,7 @@ class Config:
         judge = ModelConfig(**raw["judge"])
         regression = RegressionConfig(**raw.get("regression", {}))
         storage = StorageConfig(**raw.get("storage", {}))
+        runner = RunnerConfig(**raw.get("eval", {}).get("runner", {}))
         return cls(
             feature=raw.get("feature", {}),
             model_under_test=model,
@@ -50,5 +59,6 @@ class Config:
             dimensions=raw.get("eval", {}).get("dimensions", ["tone", "relevance", "grounding"]),
             regression=regression,
             storage=storage,
+            runner=runner,
             slack_webhook_env=raw.get("slack", {}).get("webhook_url_env", "SLACK_WEBHOOK_URL"),
         )

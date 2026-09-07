@@ -1,6 +1,6 @@
 feature:
-  name: example-feature
-  description: LLM-powered feature under regression testing
+  name: email_classifier
+  description: Classifies customer support emails into category + one-sentence summary
 
 model_under_test:
   provider: nvidia_nim
@@ -13,11 +13,15 @@ judge:
   model: nvidia/llama-3.1-nemotron-70b-instruct
 
 eval:
-  framework: deepeval
   dimensions:
     - tone
     - relevance
     - grounding
+    - summary_relevance
+  runner:
+    max_concurrency: 8
+    timeout_seconds: 60
+    max_retries: 2
 
 regression:
   absolute_floor: 3.5

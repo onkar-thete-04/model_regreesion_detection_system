@@ -4,7 +4,7 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
-from .evaluator import CaseResult
+from .scoring import CaseResult
 from .regress import Verdict
 
 

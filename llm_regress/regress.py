@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from .baseline import Baseline
 from .config import RegressionConfig
-from .evaluator import CaseResult
+from .scoring import CaseResult
 
 
 @dataclass

@@ -76,3 +76,18 @@ def test_score_many_error_case_skips_judge():
 
     assert results[0].category_match is False
     assert results[0].scores == []
+
+
+class RaisingJudge(FakeJudge):
+    async def grade(self, case_input, actual_summary, expected_summary):
+        raise RuntimeError("judge transport error")
+
+
+def test_score_many_isolates_judge_failure():
+    case = make_case("c-1", "email", category=Category.BILLING, summary="ref")
+    scorer = Scorer(RaisingJudge())
+
+    results = _run(scorer.score_many([_raw("c-1", Category.BILLING)], [case]))
+
+    assert results[0].category_match is True
+    assert results[0].scores == []

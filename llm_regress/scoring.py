@@ -51,7 +51,10 @@ class Scorer:
         scores: list[DimensionScore] = []
         if raw.output is not None and raw.error is None:
             async with semaphore:
-                scores = await self.judge.grade(case.input, raw.output.summary, case.expected.summary)
+                try:
+                    scores = await self.judge.grade(case.input, raw.output.summary, case.expected.summary)
+                except Exception:
+                    scores = []
         return CaseResult(
             case_id=case.id,
             input=case.input,

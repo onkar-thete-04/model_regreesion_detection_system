@@ -53,6 +53,9 @@ class Judge:
         except (TypeError, ValueError):
             return []
 
+        if not isinstance(raw, dict):
+            return []
+
         scores: list[DimensionScore] = []
         for dim in _JUDGE_DIMENSIONS:
             entry = raw.get(dim)

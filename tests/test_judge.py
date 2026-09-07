@@ -49,3 +49,12 @@ def test_grade_returns_empty_on_bad_json():
     scores = _run(judge.grade("email", "actual", None))
 
     assert scores == []
+
+
+def test_grade_returns_empty_on_non_object_json():
+    client = FakeAsyncOpenAI(lambda **kwargs: make_response(json.dumps([1, 2, 3])))
+    judge = Judge(model="m", base_url="https://example/v1", client=client)
+
+    scores = _run(judge.grade("email", "actual", None))
+
+    assert scores == []
